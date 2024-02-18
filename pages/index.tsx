@@ -1,6 +1,4 @@
 import VideoURL from "../src/components/VideoURL";
-import { Database } from '../utils/schema'
-import { Session, useSupabaseClient } from '@supabase/auth-helpers-react'
 
 type Props = {
   videos: any[];
