@@ -1,14 +1,16 @@
 import sqlite3 from "sqlite3";
+import { createClient } from "@supabase/supabase-js";
+
+// Create a single supabase client for interacting with your database
+const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
+const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
+
+export const supabase = createClient(supabaseUrl, supabaseKey);
 
 const database = {
-  init: () =>
-    new sqlite3.Database("./mydatabase.db", (err) => {
-      if (err) {
-        console.error("Error when trying to open the database.", err.message);
-      } else {
-        console.log("Successfully database created!");
-      }
-    }),
+  init: () => {
+    console.log("yay");
+  } /* 
   createTable: async (dbinstance) => {
     await new Promise((resolve, reject) => {
       dbinstance.run(
@@ -29,7 +31,7 @@ const database = {
         }
       );
     });
-  },
+  }, */,
 };
 
 export default database;
