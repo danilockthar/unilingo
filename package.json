@@ -1,0 +1,33 @@
+{
+  "name": "unilingo",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@types/node": "^20.11.19",
+    "@types/react": "^18.2.56",
+    "ffmpeg": "^0.0.4",
+    "fluent-ffmpeg": "^2.1.2",
+    "next": "latest",
+    "ocr-space-api-wrapper": "^2.3.0",
+    "openai": "^4.0.0",
+    "react": "latest",
+    "react-dom": "latest",
+    "sqlite3": "^5.1.7",
+    "stream": "^0.0.2",
+    "typescript": "^5.3.3"
+  },
+  "devDependencies": {
+    "@types/ffmpeg": "^1.0.7",
+    "sass": "^1.71.0"
+  }
+}

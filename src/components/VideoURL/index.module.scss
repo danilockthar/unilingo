@@ -1,0 +1,10 @@
+.root {
+  display: grid;
+  margin: 3rem;
+  width: 90%;
+  justify-self: center;
+}
+.thumbnail {
+  width: 320px; /* Set the width of the thumbnail */
+  height: auto;
+}
