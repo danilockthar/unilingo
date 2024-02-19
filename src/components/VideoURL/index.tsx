@@ -13,16 +13,19 @@ import { roboto_mono } from "../../../utils/fonts";
 const VideoURL = ({ videos }) => {
   const {
     data: dataTranslateAudio,
-    status,
     isFetching,
-    isLoading: isLoadingTranslateAudio,
     getTranslateAudio,
   } = useTranslateAudio();
 
   const { mutate: postTextToSpeech, isLoading: isLoadingTextToSpeech } =
     useTextToSpeech();
 
-  const { data: dataOCR, isLoading: isLoadingOCR, getOCR } = useOCR();
+  const {
+    data: dataOCR,
+    isFetching: isLoadingOCR,
+    getOCR,
+    isFetched: isOCRFetched,
+  } = useOCR();
   const { mutate, isLoading: isMutating } = usePostVideo();
   const [state, dispatch] = useReducer(reducer, initialState);
 
@@ -107,6 +110,8 @@ const VideoURL = ({ videos }) => {
   useEffect(() => {
     if (dataOCR?.text) {
       dispatch({ type: "SET_OCR", payload: dataOCR.text });
+    } else {
+      dispatch({ type: "SET_NOT_OCR" });
     }
   }, [dataOCR]);
 

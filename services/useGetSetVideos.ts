@@ -80,6 +80,8 @@ export const useOCR = () => {
     data,
     isLoading,
     error,
+    isFetching,
+    isFetched,
     refetch: getOCR,
   } = useQuery(
     "ocr-image",
@@ -91,5 +93,5 @@ export const useOCR = () => {
       },
     }
   );
-  return { data, isLoading, error, getOCR };
+  return { data, isLoading, error, getOCR, isFetching, isFetched };
 };

@@ -24,6 +24,8 @@ export function reducer(state, action) {
       return { ...state, transcription: action.payload };
     case "SET_OCR":
       return { ...state, ocr: action.payload };
+    case "SET_NOT_OCR":
+      return { ...state, ocr: "Cannot read the text from the image" };
     case "SET_AUDIO":
       return { ...state, audio: action.payload };
     default:
