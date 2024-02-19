@@ -188,8 +188,13 @@ const VideoURL = ({ videos }) => {
               </section>
               <section>
                 <button
+                  disabled={!state.transcription}
                   className={styles.fieldButton}
                   onClick={handleTextToSpeech}
+                  style={{
+                    cursor:
+                      !state.transcription ? "not-allowed" : "pointer",
+                  }}
                 >
                   {" "}
                   TEXT TO SPEECH{" "}
