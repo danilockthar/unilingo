@@ -1,12 +1,18 @@
 .header {
-
-  height: 35px;
   display: grid;
   grid-template-columns: min-content 1fr;
   border-bottom: 1px solid #e0e0e0;
-  padding: 16px 3rem;
+  padding: 0 3rem;
+  div {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+  }
 }
 .title {
   font-size: 1rem;
   font-weight: 600;
+}
+.logo {
+  width: 90px;
 }

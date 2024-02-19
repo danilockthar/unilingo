@@ -62,14 +62,18 @@
 }
 .uploadButton {
   margin: 2rem 0;
-  height: 36px;
+  border-radius: 8px;
+  height: 45px;
   min-width: 70px;
   justify-self: center;
-  background-color: rgb(6, 95, 212);
+  background-color: #065fd4d6;
   color: rgb(255, 255, 255);
-  padding: 0 16px;
+  padding: 0 20px;
   border: none;
   cursor: pointer;
+  &:hover{
+    background-color:rgb(6, 95, 212);
+  }
 }
 .thumbnail {
   width: 320px; /* Set the width of the thumbnail */

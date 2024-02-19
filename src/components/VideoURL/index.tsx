@@ -150,12 +150,12 @@ const VideoURL = ({ videos }) => {
             <div className={styles.wrapper}>
               <button className={styles.fieldButton} onClick={handleThumbnail}>
                 {" "}
-                Download{" "}
+                DOWNLOAD{" "}
               </button>
               <section>
                 <button className={styles.fieldButton} onClick={() => getOCR()}>
                   {" "}
-                  Get OCR{" "}
+                  GET OCR{" "}
                 </button>
                 {isLoadingOCR && <span className={styles.loader}></span>}
               </section>
