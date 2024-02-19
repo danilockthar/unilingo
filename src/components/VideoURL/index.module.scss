@@ -1,10 +1,61 @@
 .root {
   display: grid;
+  row-gap: 16px;
   margin: 3rem;
-  width: 90%;
   justify-self: center;
+  h3 {
+    font-size: 1.2rem;
+    font-weight: 400;
+    span {
+      font-weight: 600;
+    }
+  }
+  input {
+    font-size: 1.4rem;
+    font-weight: 600;
+    display: grid;
+    justify-self: center;
+    width: 80%;
+    justify-content: center;
+    border: 1px solid red;
+    border-radius: 100px;
+    padding: 16px 20px;
+  }
+  button {
+    cursor: pointer;
+    width: 200px;
+    font-size: 1rem;
+    font-weight: 600;
+    display: grid;
+    justify-content: center;
+    background-color: white;
+    border: 1px solid red;
+    border-radius: 100px;
+    padding: 8px;
+  }
+}
+.center{
+  justify-self:center;
+}
+.box {
+  display: grid;
+  justify-items: center;
+  row-gap: 1rem;
+  grid-auto-rows: min-content;
+}
+.uploadButton {
+  margin: 2rem 0;
+  justify-self: center;
+  background-color: red !important;
+  color: white;
+  padding: 15px !important;
 }
 .thumbnail {
   width: 320px; /* Set the width of the thumbnail */
   height: auto;
+}
+.info {
+  display: grid;
+  justify-items: center;
+  grid-template-columns: 1fr 1fr;
 }

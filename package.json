@@ -16,6 +16,7 @@
     "@types/node": "^20.11.19",
     "@types/react": "^18.2.56",
     "@vercel/postgres": "^0.7.2",
+    "axios": "^1.6.7",
     "ffmpeg": "^0.0.4",
     "fluent-ffmpeg": "^2.1.2",
     "next": "latest",
@@ -23,6 +24,7 @@
     "openai": "^4.0.0",
     "react": "latest",
     "react-dom": "latest",
+    "react-query": "^3.39.3",
     "stream": "^0.0.2",
     "typescript": "^5.3.3"
   },

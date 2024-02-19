@@ -1,3 +1,4 @@
+import Header from "../src/components/Header";
 import VideoURL from "../src/components/VideoURL";
 
 type Props = {
@@ -8,7 +9,8 @@ const Index = ({ videos }: Props) => {
   console.log({ videos }, "THE VIDEOS!");
   return (
     <div>
-        <VideoURL videos={videos} />
+      <Header />
+      <VideoURL videos={videos} />
     </div>
   );
 };
