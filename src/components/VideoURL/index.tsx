@@ -1,8 +1,6 @@
 import { useEffect, useReducer, useRef, useState } from "react";
 import styles from "./index.module.scss";
 import { getVideoLength } from "../../../utils/getVideoLength";
-import { postTextToSpeech } from "../../../services/textToSpeech";
-import { getOCRFromImage } from "../../../services/getOCRFromImage";
 import { initialState, reducer } from "../../lib/reducer";
 import {
   useOCR,
@@ -16,6 +14,7 @@ const VideoURL = ({ videos }) => {
   const {
     data: dataTranslateAudio,
     status,
+    isFetching,
     isLoading: isLoadingTranslateAudio,
     getTranslateAudio,
   } = useTranslateAudio();
@@ -73,8 +72,6 @@ const VideoURL = ({ videos }) => {
   };
 
   useEffect(() => {
-    console.log('FETCHD')
-    console.log({isLoadingTranslateAudio, status})
     if (dataTranslateAudio?.transcription?.text) {
       dispatch({
         type: "SET_TRANSCRIPTION",
@@ -182,9 +179,7 @@ const VideoURL = ({ videos }) => {
                 >
                   TRANSLATE
                 </button>
-                {isLoadingTranslateAudio && (
-                  <span className={styles.loader}></span>
-                )}
+                {isFetching && <span className={styles.loader}></span>}
               </section>
               <section>
                 <button

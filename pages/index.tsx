@@ -10,7 +10,6 @@ type Props = {
 };
 
 const Index = ({ videos }: Props) => {
-  console.log({ videos }, "THE VIDEOS!");
   return (
     <div>
       <Header />

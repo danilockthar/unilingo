@@ -22,7 +22,6 @@ export default async function handler(
     voice: "alloy",
     input: req.body.text,
   });
-  console.log(speechFile);
   const buffer = Buffer.from(await mp3.arrayBuffer());
   await fs.promises.writeFile(speechFile, buffer);
 

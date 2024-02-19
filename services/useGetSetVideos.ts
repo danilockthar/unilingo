@@ -37,6 +37,7 @@ export const useTranslateAudio = () => {
     isLoading,
     error,
     status,
+    isFetching,
     refetch: getTranslateAudio,
   } = useQuery(
     "translate-audio",
@@ -49,7 +50,7 @@ export const useTranslateAudio = () => {
     }
   );
 
-  return { data, isLoading, error, getTranslateAudio, status };
+  return { data, isLoading, error, getTranslateAudio, status, isFetching };
 };
 
 export const useTextToSpeech = () => {

@@ -21,7 +21,7 @@ export default async function handler(
   }
   if (req.method === "POST") {
     const { url } = req.body;
-    console.log(url);
+
     const ffmpeg = require("fluent-ffmpeg");
     let videometadata;
     fs.unlink("public/audio.wav", (err) => {
