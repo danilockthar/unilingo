@@ -10,6 +10,9 @@
       font-weight: 600;
     }
   }
+  figcaption {
+    font-size: 12px;
+  }
   input {
     font-size: 1.4rem;
     font-weight: 600;
@@ -21,21 +24,35 @@
     border-radius: 100px;
     padding: 16px 20px;
   }
-  button {
-    cursor: pointer;
-    width: 200px;
-    font-size: 1rem;
-    font-weight: 600;
-    display: grid;
-    justify-content: center;
-    background-color: white;
-    border: 1px solid red;
-    border-radius: 100px;
-    padding: 8px;
+  section {
+    display: flex;
+    flex-direction: row;
   }
 }
-.center{
-  justify-self:center;
+.infovideo {
+  justify-self: baseline;
+}
+.fieldButton {
+  border-radius: 8px;
+  background-color: rgba(0, 0, 0, 0.05);
+  height: 32px;
+  min-width: 12px;
+  cursor: pointer;
+  color: rgb(15, 15, 15);
+  font-weight: 500;
+  border: none;
+  padding: 0 12px;
+  &:hover {
+    background-color: #e5e5e5;
+  }
+}
+.wrapper {
+  display: flex;
+  gap: 16px;
+  flex-direction: row;
+}
+.center {
+  justify-self: center;
 }
 .box {
   display: grid;
@@ -45,10 +62,14 @@
 }
 .uploadButton {
   margin: 2rem 0;
+  height: 36px;
+  min-width: 70px;
   justify-self: center;
-  background-color: red !important;
-  color: white;
-  padding: 15px !important;
+  background-color: rgb(6, 95, 212);
+  color: rgb(255, 255, 255);
+  padding: 0 16px;
+  border: none;
+  cursor: pointer;
 }
 .thumbnail {
   width: 320px; /* Set the width of the thumbnail */
@@ -58,4 +79,57 @@
   display: grid;
   justify-items: center;
   grid-template-columns: 1fr 1fr;
+}
+.loader {
+  width: 35px;
+  height: 35px;
+  border-radius: 50%;
+  display: inline-block;
+  position: relative;
+  border: 3px solid;
+  border-color: #fff #fff transparent transparent;
+  box-sizing: border-box;
+  animation: rotation 1s linear infinite;
+}
+.loader::after,
+.loader::before {
+  content: "";
+  box-sizing: border-box;
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  margin: auto;
+  border: 3px solid;
+  border-color: transparent transparent #ff3d00 #ff3d00;
+  width: 17px;
+  height: 17px;
+  border-radius: 50%;
+  box-sizing: border-box;
+  animation: rotationBack 0.5s linear infinite;
+  transform-origin: center center;
+}
+.loader::before {
+  width: 19px;
+  height: 19px;
+  border-color: #fff #fff transparent transparent;
+  animation: rotation 1.5s linear infinite;
+}
+
+@keyframes rotation {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+@keyframes rotationBack {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(-360deg);
+  }
 }

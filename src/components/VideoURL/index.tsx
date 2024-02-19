@@ -1,32 +1,45 @@
 import { useEffect, useReducer, useRef, useState } from "react";
 import styles from "./index.module.scss";
-import { uploadURL } from "../../../services/uploadURL";
 import { getVideoLength } from "../../../utils/getVideoLength";
-import { translateAudio } from "../../../services/translate";
 import { postTextToSpeech } from "../../../services/textToSpeech";
 import { getOCRFromImage } from "../../../services/getOCRFromImage";
 import { initialState, reducer } from "../../lib/reducer";
-import { usePostVideo } from "../../../services/useGetSetVideos";
+import {
+  useOCR,
+  usePostVideo,
+  useTextToSpeech,
+  useTranslateAudio,
+} from "../../../services/useGetSetVideos";
+import { roboto_mono } from "../../../utils/fonts";
 
 const VideoURL = ({ videos }) => {
+  const {
+    data: dataTranslateAudio,
+    status,
+    isLoading: isLoadingTranslateAudio,
+    getTranslateAudio,
+  } = useTranslateAudio();
+
+  const { mutate: postTextToSpeech, isLoading: isLoadingTextToSpeech } =
+    useTextToSpeech();
+
+  const { data: dataOCR, isLoading: isLoadingOCR, getOCR } = useOCR();
   const { mutate, isLoading: isMutating } = usePostVideo();
   const [state, dispatch] = useReducer(reducer, initialState);
+
   const imagePath = "thumbnail.jpg";
   const imageUrlWithCacheBuster = `${imagePath}?${new Date().getTime()}`;
 
   const audioUrl = "audio.wav";
-  // Add a unique query parameter to the audio URL
   const audioUrlWithCacheBuster = `${audioUrl}?${new Date().getTime()}`;
 
   useEffect(() => {
     if (videos.length > 0) {
-      /* setUrl(videos[0].url); */
       dispatch({ type: "SET_URL", payload: videos[0].url });
     }
   }, [videos]);
 
   const handleURL = ({ target: { value } }) => {
-    /*  setUrl(value); */
     dispatch({ type: "SET_URL", payload: value });
   };
 
@@ -34,7 +47,6 @@ const VideoURL = ({ videos }) => {
     if (state.url === "") return;
 
     dispatch({ type: "GO_DEFAULT" });
-    /*     const response = await uploadURL(state.url); */
 
     mutate(state.url, {
       onSuccess({ data }) {
@@ -58,37 +70,18 @@ const VideoURL = ({ videos }) => {
         dispatch({ type: "SET_VIDEO_LENGTH", payload: null });
       },
     });
-
-    /* if (response.metadata.format) {
-      dispatch({
-        type: "SET_VIDEO_LENGTH",
-        payload: getVideoLength(response.metadata.format.duration),
-      });
-      response.metadata.streams.find((elem) => {
-        elem.height
-          ? dispatch({ type: "SET_PIXEL_HEIGHT", payload: elem.height })
-          : null;
-      });
-      dispatch({
-        type: "SET_FILENAME",
-        payload: response.metadata.format.filename,
-      });
-    } else {
-      dispatch({ type: "SET_VIDEO_LENGTH", payload: null });
-    } */
   };
 
-  const handleTranslate = async () => {
-    const response = await translateAudio();
-    if (response.transcription) {
+  useEffect(() => {
+    console.log('FETCHD')
+    console.log({isLoadingTranslateAudio, status})
+    if (dataTranslateAudio?.transcription?.text) {
       dispatch({
         type: "SET_TRANSCRIPTION",
-        payload: response.transcription.text,
+        payload: dataTranslateAudio.transcription.text,
       });
-      /*     setTranscription(response.transcription.text); */
     }
-    console.log(response, "RESPONSE");
-  };
+  }, [dataTranslateAudio]);
 
   const downloadAudio = () => {
     const link = document.createElement("a");
@@ -98,11 +91,13 @@ const VideoURL = ({ videos }) => {
   };
 
   const handleTextToSpeech = async () => {
-    const request = await postTextToSpeech(state.transcription);
-    if (request.message === "Success") {
-      /* setAudio(true); */
-      dispatch({ type: "SET_AUDIO", payload: true });
-    }
+    postTextToSpeech(state.transcription, {
+      onSuccess: ({ data }) => {
+        if (data.message === "Success") {
+          dispatch({ type: "SET_AUDIO", payload: true });
+        }
+      },
+    });
   };
 
   const handleThumbnail = () => {
@@ -112,12 +107,11 @@ const VideoURL = ({ videos }) => {
     link.click();
   };
 
-  const handleOCR = async () => {
-    const response = await getOCRFromImage();
-    if (response.text) {
-      dispatch({ type: "SET_OCR", payload: response.text });
+  useEffect(() => {
+    if (dataOCR?.text) {
+      dispatch({ type: "SET_OCR", payload: dataOCR.text });
     }
-  };
+  }, [dataOCR]);
 
   return (
     <div className={styles.root}>
@@ -126,32 +120,48 @@ const VideoURL = ({ videos }) => {
       <input onChange={handleURL} value={state.url} />
       <button onClick={handleUpload} className={styles.uploadButton}>
         {" "}
-        Upload!{" "}
+        ANALYZE VIDEO{" "}
       </button>
       {isMutating && <p className={styles.center}>Uploading...</p>}
       <div className={styles.info}>
         {state.pixelHeight && (
           <div className={styles.box}>
-            <h3>
+            <h3 className={styles.infovideo}>
               {" "}
               Video Length: <span> {state.videoLength} </span>{" "}
             </h3>
-            <h3>
+            <h3 className={styles.infovideo}>
               {" "}
               Resolution:{" "}
               <span> {state.pixelHeight ? `${state.pixelHeight}p` : ""}</span>
             </h3>
-            <h3> Video Thumbnail </h3>
-            <img
-              key={state.filename}
-              className={styles.thumbnail}
-              src={imageUrlWithCacheBuster}
-              alt="thumbnail"
-            />
-            <button onClick={handleThumbnail}> Download </button>
+            <figure>
+              <img
+                key={state.filename}
+                className={styles.thumbnail}
+                src={imageUrlWithCacheBuster}
+                alt="thumbnail"
+              />
+              <figcaption> Video Thumbnail</figcaption>
+            </figure>
 
-            <button onClick={handleOCR}> Get OCR </button>
-            {state.ocr && <p>{state.ocr}</p>}
+            <div className={styles.wrapper}>
+              <button className={styles.fieldButton} onClick={handleThumbnail}>
+                {" "}
+                Download{" "}
+              </button>
+              <section>
+                <button className={styles.fieldButton} onClick={() => getOCR()}>
+                  {" "}
+                  Get OCR{" "}
+                </button>
+                {isLoadingOCR && <span className={styles.loader}></span>}
+              </section>
+            </div>
+
+            {state.ocr && (
+              <span className={roboto_mono.className}>{state.ocr}</span>
+            )}
           </div>
         )}
 
@@ -160,11 +170,38 @@ const VideoURL = ({ videos }) => {
             <audio id="audio" controls key={state.filename}>
               <source src={audioUrlWithCacheBuster} type="audio/mp3" />
             </audio>
-            <button onClick={downloadAudio}> download audio</button>
-            <button onClick={handleTranslate}>Translate audio </button>
+            <div className={styles.wrapper}>
+              <button className={styles.fieldButton} onClick={downloadAudio}>
+                {" "}
+                DOWNLOAD
+              </button>
+              <section>
+                <button
+                  className={styles.fieldButton}
+                  onClick={() => getTranslateAudio()}
+                >
+                  TRANSLATE
+                </button>
+                {isLoadingTranslateAudio && (
+                  <span className={styles.loader}></span>
+                )}
+              </section>
+              <section>
+                <button
+                  className={styles.fieldButton}
+                  onClick={handleTextToSpeech}
+                >
+                  {" "}
+                  TEXT TO SPEECH{" "}
+                </button>
+                {isLoadingTextToSpeech && (
+                  <span className={styles.loader}></span>
+                )}
+              </section>
+            </div>
+
             {state.transcription && <p>{state.transcription}</p>}
 
-            <button onClick={handleTextToSpeech}> Text to speech </button>
             {state.audio && (
               <audio id="audio" controls>
                 <source src="speech.mp3" type="audio/mp3" />

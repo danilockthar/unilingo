@@ -3,28 +3,25 @@ import { sql } from "@vercel/postgres";
 import fs from "fs";
 
 type Video = {
-  Url: string;
+  url?: string;
 };
 type ResponseData = {
-  rows?: any[];
+  rows?: Video[];
   message?: string;
   metadata?: any;
-  audioBuffer?: any;
 };
 
 export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse<ResponseData>
 ) {
-  /*   const db = database.init(); */
   if (req.method === "GET") {
-    /* database.createTable(db); */
     const videos = await sql`SELECT * FROM videos ORDER BY ID DESC LIMIT 1`;
     res.status(200).json({ rows: videos.rows });
   }
   if (req.method === "POST") {
     const { url } = req.body;
-    console.log(url)
+    console.log(url);
     const ffmpeg = require("fluent-ffmpeg");
     let videometadata;
     fs.unlink("public/audio.wav", (err) => {
@@ -34,19 +31,6 @@ export default async function handler(
       }
       console.log("Archivo eliminado correctamente");
     });
-    /*   const files = [
-      "public/audio.wav",
-      "public/thumbnail.jpg",
-      "public/speech.mp3",
-    ];
-    files.forEach((path) => {
-      if (fs.existsSync(path)) {
-        fs.unlinkSync(path);
-        console.log(`File ${path} removed`);
-      } else {
-        console.log(`File ${path} does not exist`);
-      }
-    }); */
     try {
       ffmpeg(url).ffprobe((err, metadata) => {
         if (err) {
@@ -54,7 +38,6 @@ export default async function handler(
           return;
         }
         videometadata = metadata;
-
         // Take a screenshot
         ffmpeg(url)
           .screenshots({
@@ -76,7 +59,6 @@ export default async function handler(
                   await sql.query(
                     `INSERT INTO videos (url) VALUES ('${url}');`
                   );
-                  console.log(videometadata);
                   res.status(200).json({ metadata: videometadata });
                 } catch (error) {
                   return res

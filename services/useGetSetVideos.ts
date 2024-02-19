@@ -11,8 +11,6 @@ export const useGetVideo = () => {
 
 export const usePostVideo = () => {
   const queryClient = useQueryClient();
-
-  console.log("entry");
   const { mutate, isLoading } = useMutation({
     mutationFn: async (url) =>
       await axios.post(
@@ -24,7 +22,73 @@ export const usePostVideo = () => {
           },
         }
       ),
+    onSuccess: () => {
+      queryClient.invalidateQueries("videos");
+    },
   });
 
   return { mutate, isLoading };
+};
+
+export const useTranslateAudio = () => {
+  const queryClient = useQueryClient();
+  const {
+    data,
+    isLoading,
+    error,
+    status,
+    refetch: getTranslateAudio,
+  } = useQuery(
+    "translate-audio",
+    () => fetch("/api/translate-audio").then((res) => res.json()),
+    {
+      enabled: false,
+      onSuccess: () => {
+        queryClient.invalidateQueries("translate-audio");
+      },
+    }
+  );
+
+  return { data, isLoading, error, getTranslateAudio, status };
+};
+
+export const useTextToSpeech = () => {
+  const queryClient = useQueryClient();
+
+  const { mutate, isLoading } = useMutation({
+    mutationFn: async (text) =>
+      await axios.post(
+        "/api/text-to-speech",
+        { text },
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      ),
+    onSuccess: () => {
+      queryClient.invalidateQueries("text-to-speech");
+    },
+  });
+  return { mutate, isLoading };
+};
+
+export const useOCR = () => {
+  const queryClient = useQueryClient();
+  const {
+    data,
+    isLoading,
+    error,
+    refetch: getOCR,
+  } = useQuery(
+    "ocr-image",
+    () => fetch("/api/ocr-image").then((res) => res.json()),
+    {
+      enabled: false,
+      onSuccess: () => {
+        queryClient.invalidateQueries("ocr-image");
+      },
+    }
+  );
+  return { data, isLoading, error, getOCR };
 };

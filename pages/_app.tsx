@@ -1,9 +1,8 @@
 import type { AppProps } from "next/app";
-import "../public/globals.css";
-import { Inter } from "next/font/google";
 import { QueryClient, QueryClientProvider } from "react-query";
+import { inter } from "../utils/fonts";
+import "../public/globals.css";
 
-const inter = Inter({ subsets: ["latin"] });
 export default function MyApp({ Component, pageProps }: AppProps) {
   const queryClient = new QueryClient();
   return (

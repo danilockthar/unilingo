@@ -1,8 +1,12 @@
 import Header from "../src/components/Header";
 import VideoURL from "../src/components/VideoURL";
 
+type Video = {
+  url: string;
+}
+
 type Props = {
-  videos: any[];
+  videos: Video[];
 };
 
 const Index = ({ videos }: Props) => {
